@@ -10,6 +10,14 @@
 #include <string.h>
 #include <time.h>
 #include <wait.h>
+#include <curl/curl.h>
+#include <curl/easy.h>
+
+static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+  size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
+  return written;
+}
 
 void main(int argc, char * argv[]) {
   pid_t pid = fork();
@@ -53,7 +61,7 @@ void main(int argc, char * argv[]) {
     }
 
     char header[25] = "#!/bin/bash";
-    char command_kill[100] = "ps -ef | grep 'soal3' | awk '{print $2}' | xargs -r kill -9";
+    char command_kill[100] = "ps -ef | grep 'soal3' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
     char command_remove[75] = "rm -f Killer.sh";
 
     fputs(header, sh_killer);
@@ -99,8 +107,27 @@ void main(int argc, char * argv[]) {
                 tm_s.tm_min, tm_s.tm_sec);
               
               if (fork() == 0) {
-                char *argv[] = {"wget", "-qO", file_name, download_link, NULL};
-                execv("/bin/wget", argv);
+                CURL * curl_util;
+                FILE * image;
+
+                curl_util = curl_easy_init(); 
+                if (curl_util) {
+                  image = fopen(file_name, "wb"); 
+                  if (image != NULL) {
+                    curl_easy_setopt(curl_util, CURLOPT_URL, download_link);
+                    curl_easy_setopt(curl_util, CURLOPT_FOLLOWLOCATION, 1);
+                    curl_easy_setopt(curl_util, CURLOPT_WRITEFUNCTION, write_data);
+                    curl_easy_setopt(curl_util, CURLOPT_WRITEDATA, image);
+
+                    curl_easy_perform(curl_util);
+                    curl_easy_cleanup(curl_util);
+                    fclose(image); 
+                  } else {
+                    exit(EXIT_FAILURE);
+                  }
+                }
+
+                exit(EXIT_SUCCESS);
               }
 
               counter++;
