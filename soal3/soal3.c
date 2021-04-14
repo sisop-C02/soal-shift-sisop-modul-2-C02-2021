@@ -39,7 +39,6 @@ void main(int argc, char * argv[]) {
 
 	char * root_dir =
 		"/home/maroqi/Projects/OSProject/Modul_2/soal-shift-sisop-modul-2-C02-2021/soal3";
-  char * link = "https://picsum.photos";
 
   if (strcmp(argv[1], "-z") == 0) {
     chdir(root_dir);
@@ -63,30 +62,40 @@ void main(int argc, char * argv[]) {
     fputs(command_remove, sh_killer);
     fclose(sh_killer);
 
-    char *argv[] = {"bash", sh_name, NULL};
-    execv("/bin/bash", argv);
+    char command_sh[35];
+    sprintf(command_sh, "chmod u+x %s && ./%s", sh_name, sh_name);
+    FILE * run_sh = popen(command_sh, "w");
+    pclose(run_sh);
   } else if (strcmp(argv[1], "-x") == 0) {
     while (true) {
       if (fork() == 0) {
-        char folder_name[100];
+        chdir(root_dir);
+
+        char dir_name[100];
         time_t t_o = time(NULL);
         struct tm tm_s = *localtime(&t_o);
-        sprintf(folder_name, "%d-%02d-%02d_%02d:%02d:%02d", 
+        sprintf(dir_name, "%d-%02d-%02d_%02d:%02d:%02d", 
           tm_s.tm_year + 1900, tm_s.tm_mon + 1, tm_s.tm_mday, tm_s.tm_hour,
           tm_s.tm_min, tm_s.tm_sec);
 
-        char target_dir[255];
-        strcpy(target_dir, root_dir);
-        strcat(target_dir, "/");
-        strcat(target_dir, folder_name);
+        pid_t child_mkdir= fork();
+        int status_mkdir;
 
-        struct stat st_mark = {0};
-        if (stat(target_dir, &st_mark) == -1) {
-          if (!mkdir(target_dir, 0700)) {
+        if (child_mkdir == 0) {
+          char *argv[] = {"mkdir", "-p", dir_name, NULL};
+          execv("/bin/mkdir", argv);
+        } else {
+          while ((wait(&status_mkdir)) > 0);
+          
+          char target_dir[255];
+          sprintf(target_dir, "%s/%s", root_dir, dir_name);
+          struct stat st_mark = {0};
+          if (stat(target_dir, &st_mark) != -1) {
             chdir(target_dir);
 
             int counter = 1;
             while (counter <= 10) {
+              char * link = "https://picsum.photos";
               int seconds = time(NULL);
               char download_link[255];
               sprintf(download_link, "%s/%d", link, (seconds % 1000) + 5);
@@ -135,20 +144,20 @@ void main(int argc, char * argv[]) {
             }
 
             chdir(root_dir);
-            pid_t child_id = fork();
-            int status;
+            pid_t child_zip = fork();
+            int status_zip;
 
-            if (child_id == 0) {
+            if (child_zip == 0) {
               char archive_name[25];
-              strcpy(archive_name, folder_name);
+              strcpy(archive_name, dir_name);
               strcat(archive_name, ".zip");
 
-              char *argv[] = {"zip", "-r", archive_name, folder_name, NULL};
+              char *argv[] = {"zip", "-r", archive_name, dir_name, NULL};
               execv("/bin/zip", argv);
             } else {
-              while ((wait(&status)) > 0);
+              while ((wait(&status_zip)) > 0);
 
-              char *argv[] = {"rm", "-rf", folder_name, NULL};
+              char *argv[] = {"rm", "-rf", dir_name, NULL};
               execv("/bin/rm", argv);
             }
           } else {
@@ -157,8 +166,8 @@ void main(int argc, char * argv[]) {
         }
         exit(EXIT_SUCCESS);
       }
-      
-      sleep(10);
+      sleep(40);
     }
   }
+  exit(EXIT_SUCCESS);
 }
