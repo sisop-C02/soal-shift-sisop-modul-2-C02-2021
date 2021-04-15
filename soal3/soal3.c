@@ -40,33 +40,40 @@ void main(int argc, char * argv[]) {
 	char * root_dir =
 		"/home/maroqi/Projects/OSProject/Modul_2/soal-shift-sisop-modul-2-C02-2021/soal3";
 
-  if (strcmp(argv[1], "-z") == 0) {
-    chdir(root_dir);
-    
-    char * sh_name = "Killer.sh";
-    FILE * sh_killer;
-    sh_killer = fopen(sh_name, "w");
+  if (argc > 1) {
+    if (strcmp(argv[1], "-z") == 0 || strcmp(argv[1], "-x") == 0) {
+      chdir(root_dir);
+      
+      char * sh_name = "Killer.sh";
+      FILE * sh_killer;
+      sh_killer = fopen(sh_name, "w");
 
-    if (sh_killer == NULL) {
-      exit(EXIT_FAILURE);
+      if (sh_killer == NULL) {
+        exit(EXIT_FAILURE);
+      }
+
+      char header[25] = "#!/bin/bash";
+      char command_remove[75] = "rm -f Killer.sh";
+      char command_kill[100];
+      if (strcmp(argv[1], "-z") == 0) {
+        strcpy(command_kill, "ps -C soal3 -o pid= | xargs -r kill -9");
+      } else if (strcmp(argv[1], "-x") == 0) {
+        strcpy(command_kill, "ps -C soal3 -o pid= -o stat= | awk '/Ss/ {print $1}' | xargs -r kill -9");
+      }
+
+      fputs(header, sh_killer);
+      fputs("\n\n", sh_killer);
+      fputs(command_kill, sh_killer);
+      fputs("\n\n", sh_killer);
+      fputs(command_remove, sh_killer);
+      fclose(sh_killer);
+
+      char command_sh[35];
+      sprintf(command_sh, "chmod u+x %s && ./%s", sh_name, sh_name);
+      FILE * run_sh = popen(command_sh, "w");
+      pclose(run_sh);
     }
-
-    char header[25] = "#!/bin/bash";
-    char command_kill[100] = "ps -ef | grep 'soal3' | awk '{print $2}' | xargs -r kill -9";
-    char command_remove[75] = "rm -f Killer.sh";
-
-    fputs(header, sh_killer);
-    fputs("\n\n", sh_killer);
-    fputs(command_kill, sh_killer);
-    fputs("\n\n", sh_killer);
-    fputs(command_remove, sh_killer);
-    fclose(sh_killer);
-
-    char command_sh[35];
-    sprintf(command_sh, "chmod u+x %s && ./%s", sh_name, sh_name);
-    FILE * run_sh = popen(command_sh, "w");
-    pclose(run_sh);
-  } else if (strcmp(argv[1], "-x") == 0) {
+  } else {
     while (true) {
       if (fork() == 0) {
         chdir(root_dir);
