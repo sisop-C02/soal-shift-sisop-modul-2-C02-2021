@@ -3,22 +3,24 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <wait.h>
 #include <dirent.h>
 
+char filename[100][100];
+char * default_dir = "/home/jaglfr/modul2/petshop/";
+void execute_order(char[], char[], char[], int, bool);
+
 int main(){
 
-  // Soal A
   pid_t child1, child2;
 
-  char * default_dir = "/home/jaglfr/modul2/petshop/";
   char * pets_dir = "/home/jaglfr/Documents/Source Codes/SisOp/Modul2/pets.zip";
 
   child1 = fork();
   int status1;
   if(child1 == 0) {
     child2 = fork();
-    if (child2 < 0) exit(0);
     int status2;
     if(child2 == 0) {
         char *argv[] = {"mkdir", "-p", default_dir, NULL};
@@ -31,67 +33,115 @@ int main(){
   }
 
 
-  // Soal B
-  else { 
+  else {
+     
     while ((wait(&status1)) > 0);
     
+    // Variabel yang diperlukan
     DIR *dir_path;
     struct dirent *ent_path;
     dir_path = opendir(default_dir);
-
-    char type[100][20];
-    char name[100][20];
-    char age[100][20];
-    char filename[100][100];
-
+    // Menyimpan nama file
     int iter = 0;
     if(dir_path != NULL) {
       while((ent_path = readdir(dir_path)) != NULL) {
         if(strcmp(ent_path->d_name, ".") != 0 && strcmp(ent_path->d_name, "..") != 0) {
-          // printf("%s\n", ent_path->d_name);
           strcpy(filename[iter], ent_path->d_name);
           iter++;
         }
       }
     }
 
-    int counter = 0;
+
+    char type[60], name[60], age[60];
     for(int i = 0; i < iter; i++) {
-      int uniq = 1; 
-      char *temp = strtok(filename[i], ";");
-      for(int j = 0; j < iter; j++) {
-        if (strcmp(temp, type[j]) != 0) {
-          continue;
+      int semicol_count = 0, counter = 0; 
+      char temp[50];
+      bool isunderscore = false;
+
+      for (int j = 0; j < strlen(filename[i]); j++) {
+        if(filename[i][j] == ';') {
+          temp[counter] = '\0';
+          counter = 0; semicol_count++;
+          switch(semicol_count) {
+            case 1:
+              strcpy(type, temp);
+              // printf("type:%s ", type);
+              break;
+            case 2:
+              strcpy(name, temp);
+              // printf("name:%s ", name);
+              break;
+          }
+          strcpy(temp, "");
+        } else if (j == strlen(filename[i]) - 4 || filename[i][j] == '_') {
+            bool isunderscore = false;
+            if(filename[i][j] == '_') isunderscore = true;
+            temp[counter] = '\0'; counter = 0;
+            strcpy(age, temp);
+            if(isunderscore) {
+                execute_order(type, name, age, i, isunderscore);
+                strcpy(temp, "");
+                counter = 0; semicol_count = 0;
+                continue;
+            } else {
+                execute_order(type, name, age, i, isunderscore);
+                break;
+            }
         } else {
-          uniq = 0;
-          break;
+            temp[counter] = filename[i][j];
+            counter++;
         }
       }
-      if(uniq) { 
-        strcpy(type[counter], temp);
-        counter++;
-      }
     }
-
-    // for(int i = 0; i < counter; i++) {
-    //   printf("%s\n", type[i]);
-    // }
-
-    pid_t pid[counter];
-    for(int i = 0; i < counter; i++) {
-      char testdir[200];
-      strcpy(testdir, default_dir);
-      strcat(testdir, type[i]);
-      pid[i] = fork();
-      if(pid[i] == 0) {
-        char *argv[] = {"mkdir", "-p", testdir, NULL};
-        execv("/bin/mkdir", argv);
-        exit(0);
-      }
-    }
-
   }
-
-
   return 0;
+}
+
+
+void execute_order(char type[], char name[], char age[], int idx, bool isunderscore) {
+  // Create a directory for each type
+  pid_t pid1 = fork();
+  int status1;
+  char testdir[200];
+  strcpy(testdir, default_dir);strcat(testdir, type);
+  if(pid1==0) {
+    char *argv[] = {"mkdir", "-p", testdir, NULL};
+    execv("/bin/mkdir", argv);
+    exit(0);
+  } else {
+      while ((wait(&status1)) > 0);
+
+      char newname[100]="";
+      strcpy(newname, default_dir);
+      strcat(newname, type); strcat(newname, "/");
+      
+      char textname[100]=""; strcpy(textname, newname);
+      strcat(textname, "keterangan.txt");
+      FILE *fptr;
+      fptr = fopen(textname, "a");
+      fprintf(fptr, "nama : %s\numur : %s tahun\n\n", name, age);
+
+      strcat(newname, name); strcat(newname, ".jpg");
+
+      char oldname[100]="";
+      strcpy(oldname, default_dir);
+      strcat(oldname, filename[idx]);
+
+      pid_t pid2 = fork();
+      int status2;
+      if(pid2 == 0) {
+        if(isunderscore) {
+          char *argv[] = {"cp", oldname, newname, NULL};
+          execv("/bin/cp", argv);
+          exit(0);
+        } else {
+          char *argv[] = {"mv", oldname, newname, NULL};
+          execv("/bin/mv", argv);
+          exit(0);
+        }
+      } else  {
+          return;
+      }
+  }
 }
