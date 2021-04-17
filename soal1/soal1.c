@@ -161,9 +161,9 @@ int main() {
             for(int i=0;i<3;i++) // loop will run n times (n=3)
             wait(NULL);
 
-            removeZip("Foto.zip");
-            removeZip("Film.zip");
-            removeZip("Music.zip");
+            // removeZip("Foto.zip");
+            // removeZip("Film.zip");
+            // removeZip("Music.zip");
             moveAllFolder();
         } else if(tm.tm_mon + 1 == 4 && tm.tm_mday == 9 && tm.tm_hour == 22 && tm.tm_min == 21 && tm.tm_sec == 59) {
             zipAllFolder();
