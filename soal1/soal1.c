@@ -114,43 +114,42 @@ void childProcessThree() {
 }
 
 int main() {
-    // pid_t pid, sid;        // Variabel untuk menyimpan PID
+    pid_t pid, sid;        // Variabel untuk menyimpan PID
 
-    // pid = fork();     // Menyimpan PID dari Child Process
+    pid = fork();     // Menyimpan PID dari Child Process
 
-    // /* Keluar saat fork gagal
-    // * (nilai variabel pid < 0) */
-    // if (pid < 0) {
-    //     exit(EXIT_FAILURE);
-    // }
+    /* Keluar saat fork gagal
+    * (nilai variabel pid < 0) */
+    if (pid < 0) {
+        exit(EXIT_FAILURE);
+    }
 
-    // /* Keluar saat fork berhasil
-    // * (nilai variabel pid adalah PID dari child process) */
-    // if (pid > 0) {
-    //     exit(EXIT_SUCCESS);
-    // }
+    /* Keluar saat fork berhasil
+    * (nilai variabel pid adalah PID dari child process) */
+    if (pid > 0) {
+        exit(EXIT_SUCCESS);
+    }
 
-    // umask(0);
+    umask(0);
 
-    // sid = setsid();
-    // if (sid < 0) {
-    //     exit(EXIT_FAILURE);
-    // }
+    sid = setsid();
+    if (sid < 0) {
+        exit(EXIT_FAILURE);
+    }
 
-    // if ((chdir("/")) < 0) {
-    //     exit(EXIT_FAILURE);
-    // }
+    if ((chdir("/home/frans/Desktop/SISOP/soal-shift-sisop-modul-2-C02-2021/soal1")) < 0) {
+        exit(EXIT_FAILURE);
+    }
 
-    // close(STDIN_FILENO);
-    // close(STDOUT_FILENO);
-    // close(STDERR_FILENO);
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
 
     while (1) {
         time_t t = time(NULL);
         struct tm tm = *localtime(&t);
         if(tm.tm_mon + 1 == 4 && tm.tm_mday == 9 && tm.tm_hour == 16 && tm.tm_min == 21 && tm.tm_sec == 59) {
-            printf("Ulang taun\n");
-            for(int i=0;i<3;i++) // loop will run n times (n=5)
+            for(int i=0;i<3;i++) // loop will run n times (n=3)
             {
                 if(fork() == 0)
                 {
@@ -159,19 +158,16 @@ int main() {
                 }
             }
 
-            printf("This is parent\n");
-
-            for(int i=0;i<3;i++) // loop will run n times (n=5)
+            for(int i=0;i<3;i++) // loop will run n times (n=3)
             wait(NULL);
 
-            printf("Parent is done waiting\n");
+
             removeZip("Foto.zip");
             removeZip("Film.zip");
             removeZip("Music.zip");
             moveAllFolder();
             zipAllFolder();
             removeAllFolder();
-            printf("Parent finished\n");
         }
 
         sleep(1);
