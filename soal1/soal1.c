@@ -1,18 +1,53 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
+#include <time.h>
 
 void download(char link[], char output[]);
 void childProcess(int i);
 void childProcessOne();
 void childProcessTwo();
 void childProcessThree();
+void execvCustom(char path[], char *argv[]);
+void removeFolder(char folderName[]);
 
 void download(char link[], char output[]) {
     char *argv[] = {"wget", "--no-check-certificate", link, "-O", output, "-q", NULL};
-    execv("/usr/bin/wget", argv);
+    execvCustom("/usr/bin/wget", argv);
+}
+
+/**
+ * Run exec without terminating program synchronously
+ * 
+ **/
+void execvCustom(char path[], char *argv[]) {
+    pid_t child_id;
+    int status;
+
+
+    child_id = fork();
+
+    if (child_id < 0) {
+        while(child_id < 0)
+            child_id = fork();
+        exit(EXIT_FAILURE);
+    }
+    
+    if (child_id == 0) {
+        // this is child
+        execv(path, argv);
+        exit(0);
+    } else {
+        // this is parent
+        while ((wait(&status)) > 0);
+    }
 }
 
 void childProcess(int i) {
@@ -21,13 +56,13 @@ void childProcess(int i) {
     if(i == 2) childProcessThree();
 }
 void unzip(char filename[]) {
-    char *argv[] = {"unzip", filename, NULL};
-    execv("/usr/bin/unzip", argv);
+    char *argv[] = {"unzip", "-q", filename, NULL};
+    execvCustom("/usr/bin/unzip", argv);
 }
 
 void renameFolder(char from[], char to[]) {
-    char *argv[] = {from, to, NULL};
-    execv("/usr/bin/mv", argv);
+    char *argv[] = {"mv", from, to, NULL};
+    execvCustom("/usr/bin/mv", argv);
 }
 
 void moveAllFolder() {
@@ -36,40 +71,111 @@ void moveAllFolder() {
     renameFolder("MUSIK", "Myusik");
 }
 
+void removeZip(char filename[]) {
+    char *argv[] = {"rm", filename, NULL};
+    execvCustom("/usr/bin/rm", argv);
+}
+
+void removeAllFolder() {
+    removeFolder("Fylm/");
+    removeFolder("Myusik/");
+    removeFolder("Pyoto/");
+}
+
+void removeFolder(char folderName[]) {
+    char *argv[] = {"rm", "-rf", folderName, NULL};
+    execvCustom("/usr/bin/rm", argv);
+}
+
+void removeAllZip() {
+    removeZip("Foto.zip");
+    removeZip("Film.zip");
+    removeZip("Music.zip");
+}
+
+void zipAllFolder() {
+    char *argv[] = {"zip", "-rq", "Lopyu_Stevany.zip", "Fylm/", "Pyoto/", "Myusik/", NULL};
+    execvCustom("/usr/bin/zip", argv);
+}
+
 void childProcessOne() {
-    printf("Downloading films\n");
     download("https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download", "Film.zip");
+    unzip("Film.zip");
 }
 
 void childProcessTwo() {
-    printf("Downloading music\n");
     download("https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download", "Music.zip");   
+    unzip("Music.zip");
 }
 
 void childProcessThree() {
-    printf("Downloading photo\n");
     download("https://drive.google.com/uc?id=1FsrAzb9B5ixooGUs0dGiBr-rC7TS9wTD&export=download", "Foto.zip");
+    unzip("Foto.zip");
 }
 
 int main() {
-    pid_t pids[3];
-    int i;
-    int n = 3;
+    // pid_t pid, sid;        // Variabel untuk menyimpan PID
 
-    for(int i = 0; i < 3; i++) {
-        pids[i] = fork();
-    
-        if(pids[i] == 0) {
-            printf("Child process => PPID=%d, PID=%d\n", getppid(), getpid());
-            childProcess(i);
-            exit(0);
+    // pid = fork();     // Menyimpan PID dari Child Process
+
+    // /* Keluar saat fork gagal
+    // * (nilai variabel pid < 0) */
+    // if (pid < 0) {
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // /* Keluar saat fork berhasil
+    // * (nilai variabel pid adalah PID dari child process) */
+    // if (pid > 0) {
+    //     exit(EXIT_SUCCESS);
+    // }
+
+    // umask(0);
+
+    // sid = setsid();
+    // if (sid < 0) {
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // if ((chdir("/")) < 0) {
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // close(STDIN_FILENO);
+    // close(STDOUT_FILENO);
+    // close(STDERR_FILENO);
+
+    while (1) {
+        time_t t = time(NULL);
+        struct tm tm = *localtime(&t);
+        if(tm.tm_mon + 1 == 4 && tm.tm_mday == 9 && tm.tm_hour == 16 && tm.tm_min == 21 && tm.tm_sec == 59) {
+            printf("Ulang taun\n");
+            for(int i=0;i<3;i++) // loop will run n times (n=5)
+            {
+                if(fork() == 0)
+                {
+                    childProcess(i);
+                    exit(0);
+                }
+            }
+
+            printf("This is parent\n");
+
+            for(int i=0;i<3;i++) // loop will run n times (n=5)
+            wait(NULL);
+
+            printf("Parent is done waiting\n");
+            removeZip("Foto.zip");
+            removeZip("Film.zip");
+            removeZip("Music.zip");
+            moveAllFolder();
+            zipAllFolder();
+            removeAllFolder();
+            printf("Parent finished\n");
         }
-    }
 
-    printf("Parent process => PID=%d\n", getpid());
-    printf("Waiting for child processes to finish...\n");
-    wait(NULL);
-    printf("child process finished.\n");
-    unzip("*.zip");
-    moveAllFolder();
+        sleep(1);
+    }
+    
+    exit(0);
 }
