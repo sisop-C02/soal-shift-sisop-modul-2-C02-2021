@@ -90,7 +90,7 @@ if (child_mkdir == 0) {
 }
 exit(EXIT_SUCCESS);
 ```
-> Jika folder yang diinginkan ditemukan, maka directory dimana proses berjalan akan dipindah ke dalam nya menggunakan fungsi `chdir()`. Ketika sudah berpindah, maka akan dilakukan pengunduhan gambar sesuai dengan ketentuan, yaitu mengunduh gambar pada ![https://picsum.photos](https://picsum.photos) dengan ukuran sesuai perhitungan waktu, yaitu `(seconds % 1000) + 5`. Pengunguhan ini dilakukan di dalam perulangan sebanyak 10 kali yang dijeda selama 5 detik menggunakan fungsi `sleep()`.
+> Jika folder yang diinginkan ditemukan, maka directory dimana proses berjalan akan dipindah ke dalam nya menggunakan fungsi `chdir()`. Ketika sudah berpindah, maka akan dilakukan pengunduhan gambar sesuai dengan ketentuan, yaitu mengunduh gambar pada [https://picsum.photos](https://picsum.photos) dengan ukuran sesuai perhitungan waktu, yaitu `(seconds % 1000) + 5`. Pengunguhan ini dilakukan di dalam perulangan sebanyak 10 kali yang dijeda selama 5 detik menggunakan fungsi `sleep()`.
 ```cpp
 if (child_mkdir == 0) {
   char *argv[] = {"mkdir", "-p", dir_name, NULL};
@@ -427,5 +427,5 @@ if (argc > 1) {
   ...
 }
 ```
-Untuk melihat kode prgram lengkapnya, ![klik disini](/soal3/soal3.c):
+Untuk melihat kode prgram lengkapnya, [klik disini](/soal3/soal3.c):
 ---
