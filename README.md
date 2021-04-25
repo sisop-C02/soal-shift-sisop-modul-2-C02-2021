@@ -8,9 +8,59 @@ Kelompok C-02:
 ---
 
 ## Soal 1
+Pada suatu masa, hiduplah seorang Steven yang hidupnya pas-pasan. Steven punya pacar, namun sudah putus sebelum pacaran. Ketika dia galau memikirkan mantan, ia selalu menonton https://www.youtube.com/watch?v=568DH_9CMKI untuk menghilangkan kesedihannya. 
+
+Di lain hal Steven anak yang tidak amat sangat super membenci matkul sisop, beberapa jam setelah diputus oleh pacarnya dia menemukan wanita lain bernama Stevany, namun Stevany berkebalikan dengan Steven karena menyukai sisop. Steven ingin terlihat jago matkul sisop demi menarik perhatian Stevany.
+
+Pada hari ulang tahun Stevany, Steven ingin memberikan Stevany zip berisikan hal-hal yang disukai Stevany. Steven ingin isi zipnya menjadi rapi dengan membuat folder masing-masing sesuai extensi. (a) Dikarenakan Stevany sangat menyukai huruf Y, Steven ingin nama folder-foldernya adalah Musyik untuk mp3, Fylm untuk mp4, dan Pyoto untuk jpg (b) untuk musik Steven mendownloadnya dari link di bawah, film dari link di bawah lagi, dan foto dari link dibawah juga :). (c) Steven tidak ingin isi folder yang dibuatnya berisikan zip, sehingga perlu meng-extract-nya setelah didownload serta (d) memindahkannya ke dalam folder yang telah dibuat (hanya file yang dimasukkan).
+
+(e) Untuk memudahkan Steven, ia ingin semua hal di atas berjalan otomatis 6 jam sebelum waktu ulang tahun Stevany). (f) Setelah itu pada waktu ulang tahunnya Stevany, semua folder akan di zip dengan nama Lopyu_Stevany.zip dan semua folder akan di delete(sehingga hanya menyisakan .zip).
+Kemudian Steven meminta bantuanmu yang memang sudah jago sisop untuk membantunya mendapatkan hati Stevany. Bantu Woy!!
+
 ### Penjelasan Soal.
+> Pada soal ini, akan diunduh 3 file zip dari Google Drive, kemudian file zip tersebut akan di extract lalu folder-foldernya di rename sesuai pada soal.
+> Pada 6 jam sebelum Stevany ulang tahun, lakukan aksi diatas
+> Tepat saat Stevany ulang tahun, zip semua folder menjadi Lopyu_Stevany.zip kemudian hapus semua folder tadi.
+
 ### Solusi dan Penjelasannya
+> Pertama-tama saya membagi menjadi aksi-aksi kecil kemudian membuat fungsinya.
+> - fungsi download untuk mendownload file dari link yang diberikan
+![image](https://user-images.githubusercontent.com/49693862/115988477-25309700-a5e4-11eb-8f0f-19159724f15b.png)
+
+> - fungsi zipAllFolder untuk meng-zip semua folder
+![image](https://user-images.githubusercontent.com/49693862/115988500-4b563700-a5e4-11eb-9990-7a557b0834d7.png)
+
+> - fungsi untuk merename folder dengan cara di move
+![image](https://user-images.githubusercontent.com/49693862/115988559-87899780-a5e4-11eb-99c4-149a140a7f2b.png)
+
+> - fungsi untuk menjalankan fungsi execv di child process sehingga parent tidak ter-replace
+![image](https://user-images.githubusercontent.com/49693862/115988591-aab44700-a5e4-11eb-9ba6-32876c2510b8.png)
+
+> Kemudian karena program yang dibuat menunggu ulang tahun Stevany maka dibuat dalam bentuk daemon
+> Pada 6 jam sebelum ulang tahun, lakukan download, zip dan rename folder.
+![image](https://user-images.githubusercontent.com/49693862/115988659-ef3fe280-a5e4-11eb-8185-d85cf8c2332e.png)
+
+> Tepat pada ulang tahun Stevany, zip semua folder kemudian hapus foldernya
+![image](https://user-images.githubusercontent.com/49693862/115988684-07affd00-a5e5-11eb-828a-c4153f2ef622.png)
+
 ### Dokumentasi dan Kendala
+> Pertama, compile program, kemudian jalankan, kemudian atur tanggal ke 6 jam sebelum Stevany ulang tahun.
+![image](https://user-images.githubusercontent.com/49693862/115988870-b9e7c480-a5e5-11eb-95f8-5eb61a5132e8.png)
+
+> Nantinya akan terunduh 3 zip dengan kontennya berada pada folder yang kita inginkan
+![image](https://user-images.githubusercontent.com/49693862/115988906-dd127400-a5e5-11eb-96dc-c0e3936abd0a.png)
+
+> Kemudian, kita set waktu menjadi satu detik sebelum ulang tahun Stevany
+![image](https://user-images.githubusercontent.com/49693862/115989001-3ed2de00-a5e6-11eb-9bc8-8c483acb6144.png)
+
+> Setelah itu, folder-folder yang tadi akan menjadi zip dan folder telah dihapus
+![image](https://user-images.githubusercontent.com/49693862/115989015-5611cb80-a5e6-11eb-9754-12b55c537db1.png)
+
+> Kendala pengerjaan:
+> - Awalnya tidak tahu kalau execv itu mereplace process. Setelah tahu, baru dibuat fungsi execvCustom agar dilakukan pada child process
+> - Lupa awalnya program tidak berbentuk daemon
+> - Saat testing, lupa mematikan automatic date and time nya Ubuntu
+
 ## Soal 2
 ### Penjelasan Soal
 Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
