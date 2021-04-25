@@ -30,7 +30,8 @@ Kemudian Steven meminta bantuanmu yang memang sudah jago sisop untuk membantunya
 > - fungsi zipAllFolder untuk meng-zip semua folder
 ![image](https://user-images.githubusercontent.com/49693862/115988500-4b563700-a5e4-11eb-9990-7a557b0834d7.png)
 
-> - fungsi untuk merename folder dengan cara di move
+> - fungsi untuk merename folder dengan cara di move  
+
 ![image](https://user-images.githubusercontent.com/49693862/115988559-87899780-a5e4-11eb-99c4-149a140a7f2b.png)
 
 > - fungsi untuk menjalankan fungsi execv di child process sehingga parent tidak ter-replace
