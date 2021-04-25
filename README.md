@@ -30,7 +30,7 @@ Kemudian Steven meminta bantuanmu yang memang sudah jago sisop untuk membantunya
 > - fungsi zipAllFolder untuk meng-zip semua folder
 ![image](https://user-images.githubusercontent.com/49693862/115988500-4b563700-a5e4-11eb-9990-7a557b0834d7.png)
 
-> - fungsi untuk merename folder dengan cara di move
+> - fungsi untuk merename folder dengan cara di move           
 ![image](https://user-images.githubusercontent.com/49693862/115988559-87899780-a5e4-11eb-99c4-149a140a7f2b.png)
 
 > - fungsi untuk menjalankan fungsi execv di child process sehingga parent tidak ter-replace
@@ -51,7 +51,7 @@ Kemudian Steven meminta bantuanmu yang memang sudah jago sisop untuk membantunya
 ![image](https://user-images.githubusercontent.com/49693862/115988906-dd127400-a5e5-11eb-96dc-c0e3936abd0a.png)
 
 > Kemudian, kita set waktu menjadi satu detik sebelum ulang tahun Stevany
-![image](https://user-images.githubusercontent.com/49693862/115989001-3ed2de00-a5e6-11eb-9bc8-8c483acb6144.png)
+![image](https://user-images.githubusercontent.com/49693862/115989001-3ed2de00-a5e6-11eb-9bc8-8c483acb6144.png
 
 > Setelah itu, folder-folder yang tadi akan menjadi zip dan folder telah dihapus
 ![image](https://user-images.githubusercontent.com/49693862/115989015-5611cb80-a5e6-11eb-9754-12b55c537db1.png)
