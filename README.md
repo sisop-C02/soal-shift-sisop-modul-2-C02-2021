@@ -8,13 +8,276 @@ Kelompok C-02:
 ---
 
 ## Soal 1
+Pada suatu masa, hiduplah seorang Steven yang hidupnya pas-pasan. Steven punya pacar, namun sudah putus sebelum pacaran. Ketika dia galau memikirkan mantan, ia selalu menonton https://www.youtube.com/watch?v=568DH_9CMKI untuk menghilangkan kesedihannya. 
+
+Di lain hal Steven anak yang tidak amat sangat super membenci matkul sisop, beberapa jam setelah diputus oleh pacarnya dia menemukan wanita lain bernama Stevany, namun Stevany berkebalikan dengan Steven karena menyukai sisop. Steven ingin terlihat jago matkul sisop demi menarik perhatian Stevany.
+
+Pada hari ulang tahun Stevany, Steven ingin memberikan Stevany zip berisikan hal-hal yang disukai Stevany. Steven ingin isi zipnya menjadi rapi dengan membuat folder masing-masing sesuai extensi. (a) Dikarenakan Stevany sangat menyukai huruf Y, Steven ingin nama folder-foldernya adalah Musyik untuk mp3, Fylm untuk mp4, dan Pyoto untuk jpg (b) untuk musik Steven mendownloadnya dari link di bawah, film dari link di bawah lagi, dan foto dari link dibawah juga :). (c) Steven tidak ingin isi folder yang dibuatnya berisikan zip, sehingga perlu meng-extract-nya setelah didownload serta (d) memindahkannya ke dalam folder yang telah dibuat (hanya file yang dimasukkan).
+
+(e) Untuk memudahkan Steven, ia ingin semua hal di atas berjalan otomatis 6 jam sebelum waktu ulang tahun Stevany). (f) Setelah itu pada waktu ulang tahunnya Stevany, semua folder akan di zip dengan nama Lopyu_Stevany.zip dan semua folder akan di delete(sehingga hanya menyisakan .zip).
+Kemudian Steven meminta bantuanmu yang memang sudah jago sisop untuk membantunya mendapatkan hati Stevany. Bantu Woy!!
+
 ### Penjelasan Soal.
+> Pada soal ini, akan diunduh 3 file zip dari Google Drive, kemudian file zip tersebut akan di extract lalu folder-foldernya di rename sesuai pada soal.
+> Pada 6 jam sebelum Stevany ulang tahun, lakukan aksi diatas
+> Tepat saat Stevany ulang tahun, zip semua folder menjadi Lopyu_Stevany.zip kemudian hapus semua folder tadi.
+
 ### Solusi dan Penjelasannya
+> Pertama-tama saya membagi menjadi aksi-aksi kecil kemudian membuat fungsinya.
+> - fungsi download untuk mendownload file dari link yang diberikan
+![image](https://user-images.githubusercontent.com/49693862/115988477-25309700-a5e4-11eb-8f0f-19159724f15b.png)
+
+> - fungsi zipAllFolder untuk meng-zip semua folder
+![image](https://user-images.githubusercontent.com/49693862/115988500-4b563700-a5e4-11eb-9990-7a557b0834d7.png)
+
+> - fungsi untuk merename folder dengan cara di move           
+![image](https://user-images.githubusercontent.com/49693862/115988559-87899780-a5e4-11eb-99c4-149a140a7f2b.png)
+
+> - fungsi untuk menjalankan fungsi execv di child process sehingga parent tidak ter-replace
+![image](https://user-images.githubusercontent.com/49693862/115988591-aab44700-a5e4-11eb-9ba6-32876c2510b8.png)
+
+> Kemudian karena program yang dibuat menunggu ulang tahun Stevany maka dibuat dalam bentuk daemon
+> Pada 6 jam sebelum ulang tahun, lakukan download, zip dan rename folder.
+![image](https://user-images.githubusercontent.com/49693862/115988659-ef3fe280-a5e4-11eb-8185-d85cf8c2332e.png)
+
+> Tepat pada ulang tahun Stevany, zip semua folder kemudian hapus foldernya
+![image](https://user-images.githubusercontent.com/49693862/115988684-07affd00-a5e5-11eb-828a-c4153f2ef622.png)
+
 ### Dokumentasi dan Kendala
+> Pertama, compile program, kemudian jalankan, kemudian atur tanggal ke 6 jam sebelum Stevany ulang tahun.
+![image](https://user-images.githubusercontent.com/49693862/115988870-b9e7c480-a5e5-11eb-95f8-5eb61a5132e8.png)
+
+> Nantinya akan terunduh 3 zip dengan kontennya berada pada folder yang kita inginkan
+![image](https://user-images.githubusercontent.com/49693862/115988906-dd127400-a5e5-11eb-96dc-c0e3936abd0a.png)
+
+> Kemudian, kita set waktu menjadi satu detik sebelum ulang tahun Stevany
+![image](https://user-images.githubusercontent.com/49693862/115989001-3ed2de00-a5e6-11eb-9bc8-8c483acb6144.png
+
+> Setelah itu, folder-folder yang tadi akan menjadi zip dan folder telah dihapus
+![image](https://user-images.githubusercontent.com/49693862/115989015-5611cb80-a5e6-11eb-9754-12b55c537db1.png)
+
+> Kendala pengerjaan:
+> - Awalnya tidak tahu kalau execv itu mereplace process. Setelah tahu, baru dibuat fungsi execvCustom agar dilakukan pada child process
+> - Lupa awalnya program tidak berbentuk daemon
+> - Saat testing, lupa mematikan automatic date and time nya Ubuntu
+
 ## Soal 2
 ### Penjelasan Soal
+Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
+- (a) Pertama-tama program perlu mengextract zip yang diberikan ke dalam folder “/home/[user]/modul2/petshop”. Karena bos Loba teledor, dalam zip tersebut bisa berisi folder-folder yang tidak penting, maka program harus bisa membedakan file dan folder sehingga dapat memproses file yang seharusnya dikerjakan dan menghapus folder-folder yang tidak dibutuhkan.
+- (b) Foto peliharaan perlu dikategorikan sesuai jenis peliharaan, maka kamu harus membuat folder untuk setiap jenis peliharaan yang ada dalam zip. Karena kamu tidak mungkin memeriksa satu-persatu, maka program harus membuatkan folder-folder yang dibutuhkan sesuai dengan isi zip.
+Contoh: Jenis peliharaan kucing akan disimpan dalam “/petshop/cat”, jenis peliharaan kura-kura akan disimpan dalam “/petshop/turtle”.
+- (c) Setelah folder kategori berhasil dibuat, programmu akan memindahkan foto ke folder dengan kategori yang sesuai dan di rename dengan nama peliharaan.
+Contoh: “/petshop/cat/joni.jpg”.
+- (d) Karena dalam satu foto bisa terdapat lebih dari satu peliharaan maka foto harus di pindah ke masing-masing kategori yang sesuai. Contoh: foto dengan nama “dog;baro;1_cat;joni;2.jpg” dipindah ke folder “/petshop/cat/joni.jpg” dan “/petshop/dog/baro.jpg”.
+- (e) Di setiap folder buatlah sebuah file "keterangan.txt" yang berisi nama dan umur semua peliharaan dalam folder tersebut. Format harus sesuai contoh.
+```
+nama : joni
+umur  : 3 tahun
+
+nama : miko
+umur  : 2 tahun
+
+```
+Loba sangat mengapresiasi bantuanmu, minggu depan ia akan mentraktir makan malam!
+
+**Note:**
+- Setiap data peliharaan disimpan sebagai nama foto dengan format [jenis peliharaan]:[nama peliharaan]:[umur peliharaan dalam tahun]. Jika terdapat lebih dari satu peliharaan, data dipisahkan menggunakan underscore(_).
+- Tidak boleh menggunakan fungsi system(), mkdir(), dan rename().
+- Menggunakan fork dan exec.
 ### Solusi dan Penjelasannya
+- Variabel global yang digunakan
+```c
+// Global variables
+char filename[100][100];
+char * default_dir = "/home/jaglfr/modul2/petshop/";
+// Function definition
+void execute_order(char[], char[], char[], int, bool);
+```
+
+- (a) Solusi untuk poin ini adalah melakukan unzip:
+> Sebelum dilakukan unzip, perlu dibuat folder “/home/[user]/modul2/petshop”. Dalam hal ini folder akan dibuat dan path disimpan di variabel default_dir.
+```c
+// 2 children for mkdir and unzip
+pid_t child1, child2;
+// variable to store the zip directory
+char *pets_dir = "/home/jaglfr/Documents/Source Codes/SisOp/Modul2/pets.zip";
+
+// Start mkdir and unzip processes
+child1 = fork(); int status1;
+if(child1 == 0) 
+{
+    child2 = fork(); int status2;
+    if(child2 == 0) {
+        char *argv[] = {"mkdir", "-p", default_dir, NULL};
+        execv("/bin/mkdir", argv);
+    } else {
+        while ((wait(&status2)) > 0);
+        char *argv[] = {"unzip", pets_dir, "-d", default_dir, "-x", "*/*", NULL};
+        execv("/usr/bin/unzip", argv);
+    }
+}
+```
+> `child2` akan melakukan proses mkdir agar hasil unzip dapat diletakkan di directory tersebut. Sementara `child1` akan melakukan proses unzip. Proses ini hanya akan meng-unzip file saja, bukan folder. Hal ini terjadi akibat adanya parameter `"-x", "*/*"` yang meng-exclude folder dari proses unzip.
+
+- Solusi untuk poin (b), (c), (d), dan (e) diawali dengan beberapa hal berikut:
+> Menunggu hingga program unzip selesai. Semua file yang sudah berada di default_dir sekarang akan dilakukan iterasi untuk menyimpan nama dari masing-masing file yang berisi info terkait peliharaan dalam masing-masing gambar. Untuk membaca dan menyimpan nama file ini, digunakan fungsi dari library `<dirent.h>`. Nama file disimpan akan dalam array `filename[100][100]` untuk tiap iterasi hingga file habis, atau bernilai `NULL`.
+```c
+// Wait before proceed
+while ((wait(&status1)) > 0);
+// Variables required for traversing files
+DIR *dir_path;
+struct dirent *ent_path;
+dir_path = opendir(default_dir);
+// Store the filenames
+int iter = 0;
+if(dir_path != NULL) {
+    while((ent_path = readdir(dir_path)) != NULL) {
+        if(strcmp(ent_path->d_name, ".") != 0 && strcmp(ent_path->d_name, "..") != 0) {
+            strcpy(filename[iter], ent_path->d_name);
+            iter++;
+        }
+    }
+}
+```
+> Kemudian dilakukan parsing dari masing-masing nama file yang ada di dalam array `filename[100][100]`. Masing-masing nama file akan dibagi sesuai persyaratan soal. Karakter `;` membagi karakteristik dalam nama file sebagai berikut `jenis;nama;umur`. Karakter `_` membagi karakteristik antara 2 atau lebih hewan peliharaan sebagai berikut `jenis1;nama1;umur1_jenis2;nama2;umur2`. Ada statement `j == strlen(filename[i]) - 4` yang menunjukkan bahwa sebuah nama file sudah mencapai akhirnya, sebelum 4 karakter terakhir `.jpg`.
+```c
+// Temporary variables to store animal type, name, and age
+char type[60], name[60], age[60];
+// Loop through each file
+for(int i = 0; i < iter; i++) {
+    // Required variables
+    int semicol_count = 0, counter = 0;
+    char temp[50]; bool isunderscore = false;
+    
+    // Loop through each file name
+    for(int j = 0; j < strlen(filename[i]); j++) {
+        // Parsing type and name
+        if(filename[i][j] == ';') {
+            temp[counter] = '\0';
+            counter = 0; semicol_count++;
+            switch(semicol_count) {
+                case 1:
+                    strcpy(type, temp);
+                    break;
+                case 2:
+                    strcpy(name, temp);
+                    break;
+            }
+            strcpy(temp, "");
+        }
+        // Parse age and decide if there's another pet.
+        else if (j == strlen(filename[i]) - 4 || filename[i][j] == '_') {
+            bool isunderscore = false;
+            if(filename[i][j] == '_') isunderscore = true;
+            temp[counter] = '\0'; counter = 0;
+            strcpy(age, temp);
+            // Execute order
+            execute_order(type, name, age, i, isunderscore);
+            if(isunderscore) {
+                strcpy(temp, "");
+                counter = 0; semicol_count = 0;
+                continue;
+            } else {
+                break;
+            }
+        }
+        // Normal characters
+        else {
+            temp[counter] = filename[i][j];
+            counter++;
+        }
+    }
+}
+```
+> Untuk prosesnya sendiri, masing-masing terdapat di dalam sebuah fungsi `execute_order()`. Fungsi ini menerima 5 parameter. Jenis hewan, nama hewan, umur hewan, indeks nama file, dan keberadaan underscore. 
+
+- (b) Solusi untuk poin ini adalah melakukan proses membuat folder untuk masing-masing jenis hewan peliharaan:
+> Fork sebuah child untuk mengeksekusi mkdir. Nama folder merupakan hasil concatenation dari `default_dir` dan jenis hewan peliharaan. 
+```c
+// First child to mkdir
+pid_t pid1 = fork(); int status1;
+// Create folders for each animal type
+char testdir[200];
+strcpy(testdir, default_dir);strcat(testdir, type);
+if(pid1==0) {
+    char *argv[] = {"mkdir", "-p", testdir, NULL};
+    execv("/bin/mkdir", argv);
+    exit(0);
+}
+```
+
+- (c) dan (d) Solusi untuk poin ini adalah memindahkan file sesuai jenis dan rename sesuai nama hewan:
+> Menyediakan variabel string `newname` yang merupakan path serta nama baru dari masing-masing foto. Menyediakan juga variabel string `oldname` yang merupakan path serta nama lama dari masing-masing foto yang ada. `oldname` digunakan untuk mengetahui lokasi foto yang relevan (sesuai index pada `filename[idx]`).
+```c
+// New file folder
+char newname[100]="";
+strcpy(newname, default_dir);
+strcat(newname, type); strcat(newname, "/");
+// Rename
+strcat(newname, name); strcat(newname, ".jpg");
+// Old filename
+char oldname[100]="";
+strcpy(oldname, default_dir);
+strcat(oldname, filename[idx]);
+```
+> Membuat proses untuk memindahkan file ke folder yang sesuai. Apabila terdapat underscore`_`, file akan di-copy ke folder untuk hewan pertama, lalu fungsi akan dipanggil lagi untuk hewan kedua. Apabila hanya tersisa 1 hewan peliharaan, atau tidak terdapat underscore, file akan langsung di-move ke foldernya yang sesuai. Sehingga tidak perlu adanya perintah remove.
+```c
+// Decide to move or copy files
+pid_t pid2 = fork(); int status2;
+if(pid2 == 0) {
+    if(isunderscore) {
+        char *argv[] = {"cp", oldname, newname, NULL};
+        execv("/bin/cp", argv);
+        exit(0);
+    } 
+    else {
+        char *argv[] = {"mv", oldname, newname, NULL};
+        execv("/bin/mv", argv);
+        exit(0);
+    }
+} else {
+    return;
+}
+```
+- (e) Solusi untuk poin ini adalah menuliskan karakteristik hewan peliharaan dalam sebuah file `.txt`:
+> Menyediakan variabel string `textname` yang merupakan path ke sebuah folder yang sesuai dengan jenis hewan. Sediakan pointer file dengan akses append `a` yang berguna untuk menambahkan karakteristik tiap hewan yang akan ditambahkan ke dalam folder tersebut. Isi keterangan sesuai dengan permintaan soal.
+```c
+// File name for keterangan.txt
+char textname[100]=""; strcpy(textname, newname);
+strcat(textname, "keterangan.txt");
+FILE *fptr;
+fptr = fopen(textname, "a");
+fprintf(fptr, "nama : %s\numur : %s tahun\n\n", name, age);
+```
 ### Dokumentasi dan Kendala
+**Screenshot hasil:**
+- Hasil unzip
+
+![Screenshot_from_2021-04-22_18-42-42](https://user-images.githubusercontent.com/55174646/115715511-676a9600-a3a2-11eb-9eb7-861a96a91643.png)
+
+- Hasil mkdir
+
+![Screenshot_from_2021-04-22_18-43-16](https://user-images.githubusercontent.com/55174646/115713681-7d775700-a3a0-11eb-848f-1eeb0354ea13.png)
+
+![Screenshot_from_2021-04-22_18-43-34](https://user-images.githubusercontent.com/55174646/115713705-836d3800-a3a0-11eb-94dd-91da3e106a0e.png)
+
+![Screenshot_from_2021-04-22_18-43-59](https://user-images.githubusercontent.com/55174646/115713721-8831ec00-a3a0-11eb-90a7-2773a4bc9033.png)
+
+- Isi folder `kucing`
+
+![Screenshot_from_2021-04-22_18-44-12](https://user-images.githubusercontent.com/55174646/115713746-8d8f3680-a3a0-11eb-8007-b4f87dc83457.png)
+
+- Isi `keterangan.txt` di dalam folder `kucing`
+
+![Screenshot_from_2021-04-22_18-44-53](https://user-images.githubusercontent.com/55174646/115713770-92ec8100-a3a0-11eb-9e26-6314495a8950.png)
+
+**Kendala ketika pengerjaan:**
+- Terdapat hasil yang tidak konsisten ketika menggunakan metode `strtok` untuk membagi nama dengan delimiter `;` maupun `_`. Hal ini terjadi karena masih belum menguasai cara membagi string menggunakan `strtok` dan pointer. Metode alternatif yang dipilih adalah menggunakan looping manual untuk setiap nama file.
+- Terdapat beberapa masalah ketika melakukan prosedur `fork()` karena variabel untuk mengatur `wait()` belum sesuai dengan child yang ingin ditunggu. Hal ini diatasi dengan membuat variabel status untuk masing-masing child yang ketika terjadi proses `fork()`. Misal ada variabel `pid_t child1 = fork()`, ia akan memiliki variabel `int status1`. Oleh karena itu, `while ((wait(&status1)) > 0);` akan menentukan parent process untuk menunggu hingga proses child1 selesai berjalan.
+
+Untuk melihat kode program lengkapnya, [klik disini](/soal2/soal2.c):
+---
 ## Soal 3
 ### Penjelasan Soal.
 Ranora adalah mahasiswa Teknik Informatika yang saat ini sedang menjalani magang di perusahan ternama yang bernama “FakeKos Corp.”, perusahaan yang bergerak dibidang keamanan data. Karena Ranora masih magang, maka beban tugasnya tidak sebesar beban tugas pekerja tetap perusahaan. Di hari pertama Ranora bekerja, pembimbing magang Ranora memberi tugas pertamanya untuk membuat sebuah program.
@@ -427,7 +690,12 @@ if (argc > 1) {
   ...
 }
 ```
+<<<<<<< HEAD
 Untuk melihat kode prgram lengkapnya, [klik disini](/soal3/soal3.c):
 
 
 ---
+=======
+Untuk melihat kode program lengkapnya, [klik disini](/soal3/soal3.c):
+---
+>>>>>>> a037aa655cebf57ec5d8432770a15519cd209ee9
