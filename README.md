@@ -690,12 +690,17 @@ if (argc > 1) {
   ...
 }
 ```
-<<<<<<< HEAD
-Untuk melihat kode prgram lengkapnya, [klik disini](/soal3/soal3.c):
-
-
----
-=======
 Untuk melihat kode program lengkapnya, [klik disini](/soal3/soal3.c):
+### Dokumentasi dan Kendala
+Screenshot hasil:
+- Membuat folder dan download gambar
+<img src="/soal3/mkdir-download.png" width="600">
+- Membuat file dan mengarsip
+<img src="/soal3/create-zip.png" width="600">
+<img src="/soal3/inside-zip.png" width="600">
+
+Kendala ketika pengerjaan:
+Selama pengerjaan saya mendapatkan kendala ketika tidak tahu proses mana yang berjalan, sedangkan proses yang berjalan mengalamai kesalahan algoritma. Kesalahan tersebut adalah, membuat folder setiap detiknya, dan membuat child process yang membuatnya berlipat ganda. Ketika hal itu terjadi, laptop saya sempat mengalami lag ysehingga harus dimatikan secara paksa.
+
+
 ---
->>>>>>> a037aa655cebf57ec5d8432770a15519cd209ee9
